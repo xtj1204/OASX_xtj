@@ -304,7 +304,9 @@ jobs:
           if ! keytool -list -keystore "$ANDROID_KEYSTORE_PATH" -storetype PKCS12 \
                  -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" > /tmp/keytool.log 2>&1; then
             detail=$(tail -3 /tmp/keytool.log | tr '\n' ' ')
-            echo "::error::pwd_len=${#ANDROID_KEYSTORE_PASSWORD} alias_len=${#ANDROID_KEY_ALIAS} keytool: $detail"
+            javaver=$(java -version 2>&1 | head -1)
+            ossl=$(openssl pkcs12 -in "$ANDROID_KEYSTORE_PATH" -info -noout -passin "pass:$ANDROID_KEYSTORE_PASSWORD" 2>&1 | head -2 | tr '\n' ' ')
+            echo "::error::pwd_len=${#ANDROID_KEYSTORE_PASSWORD} alias_len=${#ANDROID_KEY_ALIAS} java=$javaver openssl:[$ossl] keytool:[$detail]"
             exit 1
           fi
 
