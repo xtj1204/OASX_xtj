@@ -302,9 +302,9 @@ jobs:
         run: |
           echo "keystore size: $(stat -c%s "$ANDROID_KEYSTORE_PATH") bytes"
           if ! keytool -list -keystore "$ANDROID_KEYSTORE_PATH" -storetype PKCS12 \
-                 -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS"; then
-            echo "::error::keystore 无法用 ANDROID_KEYSTORE_PASSWORD 打开，或别名 $ANDROID_KEY_ALIAS 不存在"
-            echo "提示：请确认 base64 无换行、密码无前后空格；keystore 需为 Java 兼容格式（PBE-SHA1-3DES + SHA1 MAC）"
+                 -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" > /tmp/keytool.log 2>&1; then
+            detail=$(tail -3 /tmp/keytool.log | tr '\n' ' ')
+            echo "::error::pwd_len=${#ANDROID_KEYSTORE_PASSWORD} alias_len=${#ANDROID_KEY_ALIAS} keytool: $detail"
             exit 1
           fi
 
