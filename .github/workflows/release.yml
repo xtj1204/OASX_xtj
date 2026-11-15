@@ -292,6 +292,22 @@ jobs:
           printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/oasx-release.jks"
           echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/oasx-release.jks" >> "$GITHUB_ENV"
 
+      - name: Verify Android signing key
+        # [AI-2026-11-15] 提前校验 keystore 能否被 Java 打开，避免打包跑 7 分钟后才报
+        # "keystore password was incorrect"（OpenSSL 3 生成的新式 PKCS12 MAC 算法 Java 17 不认时就是这个错）
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        shell: bash
+        run: |
+          echo "keystore size: $(stat -c%s "$ANDROID_KEYSTORE_PATH") bytes"
+          if ! keytool -list -keystore "$ANDROID_KEYSTORE_PATH" -storetype PKCS12 \
+                 -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS"; then
+            echo "::error::keystore 无法用 ANDROID_KEYSTORE_PASSWORD 打开，或别名 $ANDROID_KEY_ALIAS 不存在"
+            echo "提示：请确认 base64 无换行、密码无前后空格；keystore 需为 Java 兼容格式（PBE-SHA1-3DES + SHA1 MAC）"
+            exit 1
+          fi
+
       - name: Build Android APK
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
