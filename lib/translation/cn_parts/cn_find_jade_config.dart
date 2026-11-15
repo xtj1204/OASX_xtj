@@ -22,6 +22,13 @@ final Map<String, String> _cn_find_jade_config = {
   'invite_history_2_help': '上次被邀请（勾玉协作）的时间',
   'invite_history_4_help': '上次被邀请（狗粮协作）的时间',
   'invite_history_8_help': '上次被邀请（体力协作）的时间',
+  // [AI-2026-11-15] 新增：邀请成功的后续行为、执行完切回的账号、以及只读的邀请状态
+  'continue_after_invited': '邀请成功后继续切换小号',
+  'continue_after_invited_help': '勾选：邀请成功后继续切下一个小号；不勾选：一旦邀请成功就停止切号',
+  'return_account': '执行完任务切回账号',
+  'return_account_help': '任务结束后切回该账号，配置方式与小号一致；角色名留空则不切回',
+  'invite_status': '邀请状态',
+  'invite_status_help': '最近一轮寻找协作的结果（已邀请 / 邀请失败 / 无协作 / 无需邀请），多种协作类型分行显示',
   'character': '角色名',
   'login_character_config': '同一账号多个区服配置',
   'character_help': '小号-庭院左上角显示的那个，鉴于文字识别准确性不足，角色名搞点容易识别的',
