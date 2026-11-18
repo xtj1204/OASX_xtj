@@ -19,7 +19,7 @@ env:
 jobs:
   warm_flutter_cache:
     name: Warm Flutter Cache (Windows)
-    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/xtj' }}
     runs-on: windows-2022
     steps:
       - name: Checkout code
