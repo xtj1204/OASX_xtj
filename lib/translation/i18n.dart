@@ -56,6 +56,7 @@ part 'cn_parts/cn_quiz_config.dart';
 part 'cn_parts/cn_herotest_config.dart';
 part 'cn_parts/cn_abyss_shadows_config.dart';
 part 'cn_parts/cn_find_jade_config.dart';
+part 'cn_parts/cn_friend_battle_config.dart';
 part 'cn_parts/cn_guild_banquet_config.dart';
 part 'cn_parts/cn_kitty_shop_config.dart';
 part 'cn_parts/cn_experience_youkai_config.dart';
@@ -139,6 +140,7 @@ class Messages extends Translations {
     ..._cn_herotest_config,
     ..._cn_abyss_shadows_config,
     ..._cn_find_jade_config,
+    ..._cn_friend_battle_config,
     ..._cn_guild_banquet_config,
     ..._cn_kitty_shop_config,
     ..._cn_experience_youkai_config,
