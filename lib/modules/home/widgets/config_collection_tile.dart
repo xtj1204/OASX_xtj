@@ -45,14 +45,27 @@ class ConfigCollectionTile extends StatelessWidget {
               (showLinkCheckbox ? 64 : 0);
           final isCompact = constraints.maxWidth < compactThreshold;
           final rowColor = isActive
-              ? theme.colorScheme.primaryContainer.withValues(alpha: 0.24)
+              ? theme.colorScheme.primaryContainer.withValues(alpha: 0.55)
               : theme.cardColor;
+          // [AI-2026-11-20] 选中态补充描边：只靠背景色差在多实例之间不够醒目，
+          // 容易点错配置页（用户反馈）。选中时再加一圈主题色边框。
+          final rowShape = RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: isActive
+                ? BorderSide(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.65),
+                    width: 1.2,
+                  )
+                : BorderSide.none,
+          );
           final accentColor = _accentColor(
             context,
             controller.scriptCollectionStateFor(script),
           );
           return Material(
             color: rowColor,
+            shape: rowShape,
+            clipBehavior: Clip.antiAlias,
             child: InkWell(
               onTap: isDragCopyLoading ? null : onTap,
               child: Padding(
